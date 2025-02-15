@@ -14,24 +14,24 @@
 使用示例：
 
 #include "logger.hpp" //直接将logger.hpp复制到你的include目录里
-
 int main() {
     Logger::setLevel(INFO);  // 设置日志级别
-
     LOG_DEBUG("This debug message won't show");
     LOG_INFO("Program started");
     LOG_WARN("Memory usage: %d%%", 85);
     LOG_ERROR("File not found: %s", "data.txt");
     LOG_FATAL("Critical system failure!");
-
     return 0;
 }
 
 输出效果（终端中显示颜色）：
 
 [INFO] example.cpp:8 - Program started
+
 [WARN] example.cpp:9 - Memory usage: 85%
+
 [ERROR] example.cpp:10 - File not found: data.txt
+
 [FATAL] example.cpp:11 - Critical system failure!
 
 注意事项：
