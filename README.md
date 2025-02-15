@@ -1,31 +1,40 @@
-# LightLogger
-轻量级的header-only日志库
+# LightLogger日志库特性说明及使用文档
 
-特性说明：
+## ✨ 核心特性
 
-    日志级别：支持DEBUG、INFO、WARN、ERROR、FATAL五个级别
-    颜色输出：不同级别对应不同终端颜色（支持类Unix系统终端）
-    位置信息：自动记录文件名和行号
-    格式化输出：支持printf风格格式化
-    线程安全：使用mutex保证多线程安全
-    级别过滤：可设置全局日志级别
-    header-only：单头文件实现，无需编译
+- **日志级别**
+  - 支持：`DEBUG`、`INFO`、`WARN`、`ERROR`、`FATAL` 五个级别
+  - 级别比较：使用整数比较（级别越高数值越大）
+  - 级别过滤：支持设置全局日志级别
 
-使用示例：
+- **输出格式**
+  - 📍 自动记录文件名和行号
+  - 🎨 终端颜色支持（类Unix系统，使用ANSI转义码）
+  - ✍️ printf风格格式化输出
+  - 输出目标：标准错误输出(`std::cerr`)
 
-#include "logger.hpp" //直接将logger.hpp复制到你的include目录里
+- **工程特性**
+  - 🔒 线程安全：通过互斥锁(`mutex`)实现
+  - 📦 header-only：单头文件实现，无需编译
+
+## 🚀 使用示例
+- 直接将logger.hpp复制到你的include目录里
+```cpp
+#include "logger.hpp"
 int main() {
-    Logger::setLevel(INFO);  // 设置日志级别
+    Logger::setLevel(INFO);  // 设置全局日志级别
+
     LOG_DEBUG("This debug message won't show");
     LOG_INFO("Program started");
     LOG_WARN("Memory usage: %d%%", 85);
     LOG_ERROR("File not found: %s", "data.txt");
     LOG_FATAL("Critical system failure!");
+
     return 0;
 }
+```
 
-输出效果（终端中显示颜色）：
-
+## 🖥️ 输出效果（终端带颜色）
 [INFO] example.cpp:8 - Program started
 
 [WARN] example.cpp:9 - Memory usage: 85%
@@ -34,13 +43,17 @@ int main() {
 
 [FATAL] example.cpp:11 - Critical system failure!
 
-注意事项：
+## ⚠️ 注意事项
 
-    颜色支持需要终端支持ANSI转义码（大多数Linux/macOS终端默认支持）
-    Windows系统需要额外处理才能显示颜色（本实现未包含）
-    日志级别比较使用整数比较，级别越高数值越大
-    使用标准错误输出(std::cerr)进行日志记录
-    格式化字符串遵循C标准库printf规范
+- **平台兼容性**
+  - 颜色支持依赖终端ANSI转义码（Linux/macOS默认支持）
+  - Windows系统需要额外处理颜色显示（当前版本未实现）
 
+- **使用规范**
+  - 格式化字符串遵循C标准库printf规范
+  - 日志级别比较使用整数比较机制
+  - 所有日志通过std::cerr输出
 
-
+- **性能建议**
+  - 生产环境建议关闭DEBUG级别日志
+  - 高频日志场景注意格式化字符串性能
